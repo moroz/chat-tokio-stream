@@ -15,8 +15,13 @@ async fn main() {
     let mut line = String::new();
 
     loop {
-        reader.read_line(&mut line).await.unwrap();
+        let bytes_read = reader.read_line(&mut line).await.unwrap();
+
+        if bytes_read == 0 {
+            break;
+        }
 
         write.write_all(line.as_bytes()).await.unwrap();
+        line.clear();
     }
 }
